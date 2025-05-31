@@ -146,7 +146,7 @@ def capturar():
     atualizar_treeview(carregar_dados_arquivo())
     nome.delete(0, 'end')
     sobrenome.delete(0, 'end')
-    genero_var.set(None)
+    genero_var.set('Masculino')  # Sempre volta para Masculino após gravar
     nome.focus_set()
 
 
