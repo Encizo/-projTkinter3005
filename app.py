@@ -45,8 +45,15 @@ def carregar_dados_arquivo():
     arquivo_json = "cadastro.json"
     if os.path.exists(arquivo_json) and os.path.getsize(arquivo_json) > 0:
         with open(arquivo_json, 'r') as arquivo:
-            return [(linha['nome'], linha['sobrenome'], linha['genero']) for linha in json.load(arquivo)]
-    return [ ]
+            return [
+                (
+                    linha.get('nome', ''),
+                    linha.get('sobrenome', ''),
+                    linha.get('genero') if linha.get('genero') is not None else ''
+                )
+                for linha in json.load(arquivo)
+            ]
+    return []
 
 
 # Funções do Tkinter
@@ -84,7 +91,7 @@ def criar_entry(frame):
 
 def criar_checkbutton(frame):
     global genero_var
-    genero_var = StringVar()
+    genero_var = StringVar(value="")
     generos = ['Masculino', 'Feminino', 'Outros']
     y_pos = 95
     for gen in generos:
@@ -171,7 +178,7 @@ def capturar():
     tree.insert('', 'end', values=(entrada_nome, entrada_sobrenome, genero_selecionado))
     nome.delete(0, 'end')
     sobrenome.delete(0, 'end')
-    genero_var.set(None)
+    genero_var.set("")
     nome.focus_set()
 
 
@@ -180,7 +187,7 @@ def mostrar_campo_pesquisa():
         criar_campo_pesquisa()
     nome.delete(0, 'end')
     sobrenome.delete(0, 'end')
-    genero_var.set(None)
+    genero_var.set("")
 
 def filtrar_dados(event):
     query = campo_pesquisa.get()
